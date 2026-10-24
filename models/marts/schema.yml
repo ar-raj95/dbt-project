@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: dim_customer
+    columns:
+      - name: customer_sk
+        tests:
+          - not_null
+
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              values: ['New', 'Regular', 'Loyal']
+
+  - name: dim_product
+    columns:
+      - name: product_sk
+        tests:
+          - not_null
+
+  - name: fct_sales
+    columns:
+      - name: sale_sk
+        tests:
+          - not_null
+
+      - name: customer_sk
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_sk
+
+      - name: product_sk
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_sk
+
+  - name: agg_sales_by_category
+    columns:
+      - name: category
+        tests:
+          - not_null
